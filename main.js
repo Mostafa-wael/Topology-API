@@ -236,7 +236,7 @@ class API {
 //=========================================================================
 /**
  * utility function to displayData
- * @param {*} obj to be displayed
+ * @param {array} obj to be displayed
  */
 function displayData(obj) {
     for (var element of obj)
@@ -258,8 +258,8 @@ console.log("===");
 var devices2 = api.queryDevices('top2');
 displayData(devices2);
 //! deleteTopology
-// console.log(api.deleteTopology('top1'));
-// console.log(api.deleteTopology('top2'));
+console.log(api.deleteTopology('top1'));
+console.log(api.deleteTopology('top2'));
 //! write JSON
 console.log(api.writeJSON('top1'));
 console.log(api.writeJSON('top2'));
