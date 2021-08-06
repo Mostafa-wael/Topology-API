@@ -71,28 +71,69 @@ class API {
         return this.topologies
     }
     queryDevices(TopologyID) {
-        let top = this.topologies.filter(topology => topology['id'] == TopologyID);
-        // console.log(top)
-        if (top.length == 0) {
-            console.log("Topology " + TopologyID + " not found, ");
-            return [];
-        }
-        return top[0].getComponents();
-    }
-    writeJSON(TopologyID) {
-        var fs = require('fs');
-        let top = this.topologies.filter(topology => topology['id'] == TopologyID);
-        console.log(top)
-        if (top.length == 0) {
-            console.log("Topology " + TopologyID + " not found, ");
+        try {
+            let top = this.topologies.filter(topology => topology['id'] == TopologyID);
+            // console.log(top)
+            if (top.length == 0) {
+                console.log("Topology " + TopologyID + " not found, ");
+                return [];
+            }
+            return top[0].getComponents();
+        } catch (err) {
+            console.log(err);
             return false;
         }
-        console.log(top[0]['id']);
-        let topString = JSON.stringify(top[0]);
-        console.log(topString);
-        fs.writeFileSync(tTopologyID + '.json', topString);
-        return true;
+    }
+    writeJSON(TopologyID) {
+        try {
+            // check for the topology existence
+            let topology = this.topologies.filter(topology => topology['id'] == TopologyID);
+            if (topology.length == 0) {
+                console.log("Topology " + TopologyID + " not found, ");
+                return false;
+            }
+            let topologyString = JSON.stringify(topology[0]);
+            var fs = require('fs');
+            fs.writeFileSync(TopologyID + '.json', topologyString);
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    }
+    deleteTopology(TopologyID) {
+        try {
+            this.topologies = this.topologies.filter(topology => topology['id'] != TopologyID);
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
 
+    }
+    queryDevicesWithNetlistNode(TopologyID, NetlistNodeID) {
+        let requiredDevices = [];
+        try {
+            // get the required topology
+            let topology = this.topologies.filter(topology => topology['id'] == TopologyID);
+            // get the devices in this topology
+            let devices = this.queryDevices(topology[0]['id']);
+            // iterate over the devices 
+            for (var device of devices) {
+                let keys = Object.keys(device['netlist']); // get the keys of the netlist
+                for (var key of keys) {
+                    if (device['netlist'][key] == NetlistNodeID) {
+                        requiredDevices.push(device);
+                        console.log(device['netlist'][key]);
+                    }
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            return requiredDevices;
+
+        }
     }
 }
 //=========================================================================
@@ -101,23 +142,27 @@ function displayData(obj) {
         obj[i].displayData();
 }
 //=========================================================================
-// create API
+//! create API
 api = new API();
-// read JSON files
+//! read JSON files
 console.log(api.readJSON('topology1.json'));
 console.log(api.readJSON('topology2.json'));
-// queryTopologies
-var topos = api.queryTopologies();
-displayData(topos);
-// queryDevices
-var devices1 = api.queryDevices('top1');
-displayData(devices1);
-console.log("===");
-var devices2 = api.queryDevices('top2');
-displayData(devices2);
-
-
-
-// api.writeJSON('top1');
-// api.writeJSON('top2');
+//! queryTopologies
+// var topos = api.queryTopologies();
+// displayData(topos);
+//! queryDevices
+// var devices1 = api.queryDevices('top1');
+// displayData(devices1);
+// console.log("===");
+// var devices2 = api.queryDevices('top2');
+// displayData(devices2);
+//! deleteTopology
+// console.log(api.deleteTopology('top1'));
+// console.log(api.deleteTopology('top2'));
+//! write JSON
+// console.log(api.writeJSON('top1'));
+// console.log(api.writeJSON('top2'));
+//! queryDevicesWithNetlistNode
+console.log(api.queryDevicesWithNetlistNode('top1', 'n1'));
+console.log(api.queryDevicesWithNetlistNode('top2', 'n2'));
 console.log("\n================================================\n")
