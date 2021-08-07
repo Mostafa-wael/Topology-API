@@ -41,14 +41,14 @@ function test_setTopology() {
     if (Object.keys(topology).length == 2)
         testSuccesseded++;
     else {
-        console.warn("Can't set the topology keys properly");
+        console.warn("Failed to set the topology keys properly");
         testFailed++;
     }
     //===
     if (JSON.stringify(topology) == JSON.stringify(top))
         testSuccesseded++;
     else {
-        console.warn("topology wasn't set correctly");
+        console.warn("Failed to set the topology data properly");
         testFailed++;
     }
 }

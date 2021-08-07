@@ -31,14 +31,14 @@ function test_setDevices() {
     if (Object.keys(component).length == 4)
         testSuccesseded++;
     else {
-        console.warn("Can't set the device keys properly");
+        console.warn("Failed to set the device keys properly");
         testFailed++;
     }
     //===
     if (JSON.stringify(device) == JSON.stringify(component))
         testSuccesseded++;
     else {
-        console.warn("Devices wasn't set correctly");
+        console.warn("Failed to set devices correctly");
         testFailed++;
     }
 }
@@ -47,14 +47,14 @@ function test_isConnectedWithNetlistNode() {
     if (component.isConnectedWithNetlistNode('n1'))
         testSuccesseded++;
     else {
-        console.warn("can't detect connections");
+        console.warn("Failed to detect connections n1");
         testFailed++;
     }
     //===
     if (component.isConnectedWithNetlistNode('vin'))
         testSuccesseded++;
     else {
-        console.warn("can't detect connections");
+        console.warn("Failed to detect connections vin");
         testFailed++;
     }
     //===

@@ -17,7 +17,7 @@ class API {
          * @param {string} filePath path of the JSON file
          * @returns 
          */
-    readJSON(filePath) {
+    readJSON(filePath, updateExisting = false) {
             let inputJSON;
             try {
                 var fs = require('fs'); // The fs module enables interacting with the file system
@@ -28,7 +28,13 @@ class API {
             }
             // create the topology
             try {
-                this.topologies.push(new moduleTopology.Topology(inputJSON['id'], inputJSON['components']));
+                if (updateExisting == true) {
+                    let requiredToplogy = this.getToplogyByID(inputJSON['id']);
+                    requiredToplogy.setComponents(inputJSON['components']);
+
+                } else {
+                    this.topologies.push(new moduleTopology.Topology(inputJSON['id'], inputJSON['components']));
+                }
                 return inputJSON;
             } catch (err) {
                 console.error(err);
@@ -62,9 +68,10 @@ class API {
             return this.topologies
         }
         /**
-         * return all the devices in the topologies read by the API
+         * return all the devices in the passed topology read by the API
          * @param {string} TopologyID the ID of the required toplogy
          * @returns list of devices in that topology and an empty one if the toplogy wasn't found
+         * in case of duplicated topologies, it returns the first one only
          */
     queryDevices(TopologyID) {
             var requiredToplogy;

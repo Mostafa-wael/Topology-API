@@ -44,14 +44,14 @@ function test_readJSON() {
     if (api.readJSON('topology5.json') == null)
         testSuccesseded++;
     else {
-        console.warn("Read non-existing file");
+        console.warn("Failed to avoid reading non-existing file");
         testFailed++;
     }
     //===
     if (api.readJSON('topology1.json') != null)
         testSuccesseded++;
     else {
-        console.warn("Can't Read JSON Files");
+        console.warn("Failed to to read the JSON file");
         testFailed++;
     }
     //===
@@ -65,7 +65,15 @@ function test_readJSON() {
     if (api.readJSON('topology2.json') != null)
         testSuccesseded++;
     else {
-        console.warn("Can't Read more than one file");
+        console.warn("Failed to read more than one file");
+        testFailed++;
+    }
+    //===
+    api.readJSON('topology1.json', updateExisting = true);
+    if (api.queryTopologies().length == 3)
+        testSuccesseded++;
+    else {
+        console.warn("Failed to update existing topology");
         testFailed++;
     }
 }
@@ -75,14 +83,14 @@ function test_queryTopologies() {
     if (topologies.length == 3)
         testSuccesseded++;
     else {
-        console.warn("Can't Query Topologies");
+        console.warn("Failed to query Topologies");
         testFailed++;
     }
     //===
     if (JSON.stringify(topologies[0]) === JSON.stringify(top1))
         testSuccesseded++;
     else {
-        console.warn("Topology wasn't parsed correctly");
+        console.warn("Failed to parse the topology correctly");
         testFailed++;
     }
 }
@@ -92,7 +100,7 @@ function test_queryDevices() {
     if (devices.length == 3)
         testSuccesseded++;
     else {
-        console.warn("Can't Query Devices");
+        console.warn("Failed to query Devices");
         testFailed++;
     }
     //===
@@ -102,7 +110,7 @@ function test_queryDevices() {
     )
         testSuccesseded++;
     else {
-        console.warn("Devices wasn't parsed correctly");
+        console.warn("Failed to parse the devices correctly");
         testFailed++;
     }
 }
@@ -118,7 +126,7 @@ function test_writeJSON() {
     if (JSON.stringify(api.readJSON('top1.json')) === JSON.stringify(top1))
         testSuccesseded++;
     else {
-        console.warn("JSON file was written incorrectly");
+        console.warn("Failed to write the JSON file correctly");
         testFailed++;
     }
 }
@@ -127,14 +135,14 @@ function test_queryDevicesWithNetlistNode() {
     if (api.queryDevicesWithNetlistNode('top1', 'n1').length == 2)
         testSuccesseded++;
     else {
-        console.warn("Failed to queryDevicesWithNetlistNode");
+        console.warn("Failed to query devices with netlist node n1 from top1");
         testFailed++;
     }
     //===
     if (api.queryDevicesWithNetlistNode('top2', 'vin').length == 1)
         testSuccesseded++;
     else {
-        console.warn("Failed to queryDevicesWithNetlistNode");
+        console.warn("Failed to query devices with netlist node vin from top2");
         testFailed++;
     }
 }
@@ -143,14 +151,14 @@ function test_deleteTopology() {
     if (api.deleteTopology('top1') == true)
         testSuccesseded++;
     else {
-        console.warn("Failed to delete Topology");
+        console.warn("Failed to delete existing topology");
         testFailed++;
     }
     //===
     if (api.deleteTopology('top1') == true)
         testSuccesseded++;
     else {
-        console.warn("Failed to delete Topology");
+        console.warn("Failed to delete non-existing topology");
         testFailed++;
     }
 }

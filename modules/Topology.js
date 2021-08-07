@@ -20,6 +20,7 @@ class Topology {
          * @param {string} JSONcomponents 
          */
     setComponents(JSONcomponents) {
+            this.components = [];
             for (var device of JSONcomponents) {
                 try {
 
