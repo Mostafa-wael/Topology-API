@@ -1,6 +1,4 @@
 var topologyAPI = require("./modules/API.js");
-// console.clear();
-console.time();
 //================================================================
 //! create API
 api = new topologyAPI.API();
@@ -28,5 +26,3 @@ console.log(api.queryDevicesWithNetlistNode('top1', 'n1').length == 2);
 console.log(api.queryDevicesWithNetlistNode('top2', 'n2').length == 2);
 console.log(api.queryDevicesWithNetlistNode('top2', 'vin').length == 1);
 console.log("\n================================================\n")
-
-console.timeEnd(); // prints time taken since the timer started

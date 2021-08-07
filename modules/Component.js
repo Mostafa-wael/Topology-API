@@ -14,7 +14,7 @@ class Component {
             this['id'] = id;
             this[parametereName] = parameters;
             this['netlist'] = netlist;
-            console.log("\nnew " + this['type'] + " device is created");
+            // console.log("\nnew " + this['type'] + " device is created");
         }
         /**
          * check if the device is connected to a specific netlist node

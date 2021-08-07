@@ -1,6 +1,0 @@
-Result readJSON(FileName);
-TopologyList queryTopologies();
-DeviceList queryDevices(TopologyID);
-Result writeJSON(TopologyID);
-Result deleteTopology(TopologyID);
-DeviceList queryDevicesWithNetlistNode(TopologyID, NetlistNodeID);

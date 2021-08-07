@@ -10,7 +10,7 @@ class Topology {
      * @param {class} JSONcomponents the devices and components of the circuit
      */
     constructor(id, JSONcomponents) {
-            console.log("\nnew topology named " + id + " is created");
+            // console.log("\nnew topology named " + id + " is created");
             this.id = id;
             this.components = []
             this.setComponents(JSONcomponents);
@@ -23,8 +23,8 @@ class Topology {
             for (var device of JSONcomponents) {
                 try {
 
-                    let keys = Object.keys(device);
-                    let parametersName = keys.filter(key => key != 'type' && key != 'id' && key != 'netlist');
+                    // get the keys of the netlist then, extract the parametersName
+                    let parametersName = Object.keys(device).filter(key => key != 'type' && key != 'id' && key != 'netlist');
                     this.components.push(new moduleComponent.Component(
                         device['type'],
                         device['id'],

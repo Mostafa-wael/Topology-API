@@ -25,12 +25,5 @@ npm start
 ## Running tests:
 
 ```
+npm test
 ```
-## Screenshots:
-
-<div >
-  <p align="center">
-    <img src="./Screenshots/1.png">
-   
-  </p>
-  </div>

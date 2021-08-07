@@ -8,7 +8,7 @@ class API {
      * just a constructor 
      */
     constructor() {
-            console.log("API CREATED\n");
+            // console.log("API CREATED\n");
             this.topologies = [];
         }
         /**
