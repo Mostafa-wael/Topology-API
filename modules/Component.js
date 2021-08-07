@@ -9,21 +9,12 @@ class Component {
      * @param {string} parameters any parameters such as values and the limits
      * @param {string} netlist the netlist of the device -nodes-
      */
-    constructor(type, id, parameters, netlist) {
-            this.id = id;
-            this.type = type;
-            this.parameters = parameters;
-            this.netlist = netlist;
-            console.log("\nnew " + this.type + " device is created");
-        }
-        /**
-         * display the data for the sake of testing and debugging
-         */
-    displayData() {
-            console.log('type: ' + this.type);
-            console.log('id: ' + this.id);
-            console.log('parameters: ' + this.parameters);
-            console.log('netlist: ' + this.netlist);
+    constructor(type, id, parameters, netlist, parametereName) {
+            this['type'] = type;
+            this['id'] = id;
+            this[parametereName] = parameters;
+            this['netlist'] = netlist;
+            console.log("\nnew " + this['type'] + " device is created");
         }
         /**
          * check if the device is connected to a specific netlist node
@@ -31,9 +22,9 @@ class Component {
          * @returns connected or not connected
          */
     isConnectedWithNetlistNode(NetlistNodeID) {
-        let keys = Object.keys(this.netlist); // get the keys of the netlist
+        let keys = Object.keys(this['netlist']); // get the keys of the netlist
         for (var key of keys) {
-            if (this.netlist[key] == NetlistNodeID) {
+            if (this['netlist'][key] == NetlistNodeID) {
                 return true;
             }
         }
@@ -44,5 +35,3 @@ class Component {
 module.exports = {
     Component: Component
 };
-
-console.log("I'm a component");

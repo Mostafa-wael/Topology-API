@@ -12,26 +12,32 @@ class API {
             this.topologies = [];
         }
         /**
-         * read JSON file and extract toplogy from it
+         * read JSON file, extract toplogy from it and save it to the memory
+         * in case the topology name exists, it adds a new one, it doesn't overwrite it to avoid any loss of data and delation depends on the usre prefernces
          * @param {string} filePath path of the JSON file
          * @returns 
          */
     readJSON(filePath) {
+            let inputJSON;
             try {
                 var fs = require('fs'); // The fs module enables interacting with the file system
-                let inputJSON = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                // create the topology
-                this.topologies.push(new moduleTopology.Topology(inputJSON['id'], inputJSON['components']));
-                return true;
-            } catch (err) {
-                console.log(err);
-                return false;
+                inputJSON = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            } catch (err) { // error in reading the file or parsing the file
+                console.error(err);
+                return null;
             }
-
+            // create the topology
+            try {
+                this.topologies.push(new moduleTopology.Topology(inputJSON['id'], inputJSON['components']));
+                return inputJSON;
+            } catch (err) {
+                console.error(err);
+                return null;
+            }
         }
         /**
          * 
-         * @returns all the topologies read by the  API
+         * @returns all the topologies read by the  API with the passed ID, in case of many topologies, it return the first topology
          */
     getToplogyByID(TopologyID) {
             try {
@@ -40,10 +46,10 @@ class API {
                     console.log("Topology " + TopologyID + " not found, ");
                     return null;
                 } else {
-                    return requiredToplogy;
+                    return requiredToplogy[0];
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 return null;
             }
 
@@ -63,16 +69,17 @@ class API {
     queryDevices(TopologyID) {
             var requiredToplogy;
             try {
-                requiredToplogy = this.topologies.filter(topology => topology['id'] == TopologyID)[0]; // as the filter method return an array
+                requiredToplogy = this.topologies.filter(topology => topology['id'] == TopologyID); // as the filter method return an array
                 if (requiredToplogy.length == 0) {
                     console.log("Topology " + TopologyID + " not found, ");
                     return [];
+                } else {
+
+                    return requiredToplogy[0].queryDevices();
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 return [];
-            } finally {
-                return requiredToplogy.queryDevices();
             }
         }
         /**
@@ -88,17 +95,17 @@ class API {
                     return false;
                 }
                 // stringify the topology
-                let topologyString = JSON.stringify(requiredToplogy[0]);
+                let topologyString = JSON.stringify(requiredToplogy);
                 var fs = require('fs');
                 fs.writeFileSync(TopologyID + '.json', topologyString);
                 return true;
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 return false;
             }
         }
         /**
-         * delete the passes topology 
+         * delete the passed topology and all its copies, if the topology doesn't exist, it do nothing
          * @param {*} TopologyID 
          * @returns whether it managed to delete it or failed to do so
          */
@@ -107,7 +114,7 @@ class API {
                 this.topologies = this.topologies.filter(topology => topology['id'] != TopologyID);
                 return true;
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 return false;
             }
 
@@ -127,7 +134,7 @@ class API {
                 return requiredDevices;
             }
             // get the devices in this topology
-            let devices = this.queryDevices(requiredToplogy[0]['id']);
+            let devices = this.queryDevices(requiredToplogy['id']);
             // iterate over the devices 
             for (var device of devices) {
                 if (device.isConnectedWithNetlistNode(NetlistNodeID) == true) {
@@ -135,7 +142,7 @@ class API {
                 }
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
         } finally {
             return requiredDevices;
 
@@ -148,13 +155,15 @@ class API {
  * @param {array} obj to be displayed
  */
 function displayData(obj) {
+    // check if obj is iterable -> checks for null, undefined and iterablity
+    if (obj == null || typeof obj[Symbol.iterator] != 'function')
+        return;
+    // display data
     for (var element of obj)
-        element.displayData();
+        console.log(element);
 }
 
 module.exports = {
     API: API,
     displayData
 };
-
-console.log("I'm an API");

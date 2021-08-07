@@ -10,21 +10,10 @@ class Topology {
      * @param {class} JSONcomponents the devices and components of the circuit
      */
     constructor(id, JSONcomponents) {
-            console.log("\nnew topology: " + id + " is created");
+            console.log("\nnew topology named " + id + " is created");
             this.id = id;
             this.components = []
             this.setComponents(JSONcomponents);
-        }
-        /**
-         * display the data for the sake of testing and debugging
-         */
-    displayData() {
-            console.log('id: ' + this.id + "\nComponents:");
-            for (var device of this.components) {
-                device.displayData();
-                console.log("\n");
-            }
-            console.log("===========");
         }
         /**
          * setting the devices from the JSON file
@@ -32,12 +21,21 @@ class Topology {
          */
     setComponents(JSONcomponents) {
             for (var device of JSONcomponents) {
-                let keys = Object.keys(device);
-                this.components.push(new moduleComponent.Component(
-                    device['type'],
-                    device['id'],
-                    device[keys.filter(key => key != 'type' && key != 'id' && key != 'netlist')],
-                    device['netlist']))
+                try {
+
+                    let keys = Object.keys(device);
+                    let parametersName = keys.filter(key => key != 'type' && key != 'id' && key != 'netlist');
+                    this.components.push(new moduleComponent.Component(
+                        device['type'],
+                        device['id'],
+                        device[parametersName],
+                        device['netlist'],
+                        parametersName
+                    ))
+                } catch (e) {
+                    console.log(e);
+                    throw "missing keys in the device";
+                }
             }
         }
         /**
@@ -53,5 +51,3 @@ class Topology {
 module.exports = {
     Topology: Topology
 };
-
-console.log("I'm a Topology");
