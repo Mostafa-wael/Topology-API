@@ -1,0 +1,19 @@
+{
+    "name": "topology-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Mostafa-wael/Topology-API.git"
+    },
+    "author": "Mostafa Wael",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Mostafa-wael/Topology-API/issues"
+    },
+    "homepage": "https://github.com/Mostafa-wael/Topology-API#readme"
+}
