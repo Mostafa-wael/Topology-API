@@ -2,10 +2,10 @@
 
 ## Brief:
 
-‌An‌ ‌API‌ ‌library‌ ‌which‌ ‌does‌ ‌the‌ ‌following:‌ ‌
-1. Read‌ ‌and‌ ‌write‌ ‌topologies‌ ‌to‌ ‌and‌ ‌from‌ ‌disk.‌ ‌
+‌An‌ ‌API‌ ‌library‌ ‌which‌:‌ ‌
+1. Read‌s and‌ ‌write‌s ‌topologies‌ ‌to‌ ‌and‌ ‌from‌ ‌disk.‌ ‌
 2. Stores‌ ‌multiple‌ ‌topologies‌ ‌in‌ ‌memory.‌ ‌
-3. Execute‌ ‌operations‌ ‌on‌ ‌topologies.‌ ‌
+3. Execute‌s ‌operations‌ ‌on‌ ‌topologies.‌ ‌
 ‌
 
 A‌ ‌topology‌ ‌is‌ ‌a‌ ‌set‌ ‌of‌ ‌electronic‌ ‌components‌ ‌that‌ ‌are‌ ‌connected‌ ‌together.‌
