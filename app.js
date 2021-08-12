@@ -4,7 +4,6 @@ var topologyAPI = require("./modules/API.js");
 api = new topologyAPI.API();
 //! read JSON files
 console.log(api.readJSON('topology1.json'));
-
 console.log(api.readJSON('topology2.json'));
 //! queryTopologies
 var topologies = api.queryTopologies();

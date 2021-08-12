@@ -8,7 +8,6 @@ class API {
      * just a constructor 
      */
     constructor() {
-            // console.log("API CREATED\n");
             this.topologies = [];
         }
         /**
@@ -42,7 +41,7 @@ class API {
             }
         }
         /**
-         * 
+         * Utility function to querey topologies bu ID
          * @returns all the topologies read by the  API with the passed ID, in case of many topologies, it return the first topology
          */
     getToplogyByID(TopologyID) {
@@ -62,27 +61,26 @@ class API {
         }
         /**
          * 
-         * @returns all the topologies read by the API
+         * @returns a list of all the topologies read by the API
          */
     queryTopologies() {
             return this.topologies
         }
         /**
-         * return all the devices in the passed topology read by the API
+         * return all the devices read by the API in the passed topology 
          * @param {string} TopologyID the ID of the required toplogy
          * @returns list of devices in that topology and an empty one if the toplogy wasn't found
          * in case of duplicated topologies, it returns the first one only
          */
     queryDevices(TopologyID) {
-            var requiredToplogy;
             try {
-                requiredToplogy = this.topologies.filter(topology => topology['id'] == TopologyID); // as the filter method return an array
-                if (requiredToplogy.length == 0) {
+                let requiredToplogy = this.getToplogyByID(TopologyID);
+                if (requiredToplogy == null) {
                     console.log("Topology " + TopologyID + " not found, ");
                     return [];
                 } else {
 
-                    return requiredToplogy[0].queryDevices();
+                    return requiredToplogy.queryDevices();
                 }
             } catch (err) {
                 console.error(err);
@@ -118,6 +116,7 @@ class API {
          */
     deleteTopology(TopologyID) {
             try {
+                //TODO: delete the objects, don't filter them, as they still exist in the memory
                 this.topologies = this.topologies.filter(topology => topology['id'] != TopologyID);
                 return true;
             } catch (err) {
